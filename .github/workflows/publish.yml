@@ -3,7 +3,7 @@ name: Publish @spawn-dock/mcp
 on:
   push:
     tags:
-      - "mcp-v*"
+      - "v*"
     branches:
       - main
 
@@ -29,10 +29,10 @@ jobs:
       - name: Determine version type
         id: version
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/mcp-v* ]]; then
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             echo "type=release" >> "$GITHUB_OUTPUT"
             VERSION="${{ github.ref_name }}"
-            VERSION="${VERSION#mcp-v}"
+            VERSION="${VERSION#v}"
             echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           else
             SHORT_SHA="${GITHUB_SHA::7}"
