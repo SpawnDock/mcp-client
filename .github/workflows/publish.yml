@@ -3,11 +3,17 @@ name: Publish @spawn-dock/mcp
 on:
   push:
     tags:
-      - "v*"
+      - "mcp-v*"
+    branches:
+      - main
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/mcp-tma-client
+
     steps:
       - uses: actions/checkout@v4
 
@@ -17,7 +23,37 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - run: npm ci
+
       - run: npm run build
-      - run: npm publish
+
+      - name: Determine version type
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/mcp-v* ]]; then
+            echo "type=release" >> "$GITHUB_OUTPUT"
+            VERSION="${{ github.ref_name }}"
+            VERSION="${VERSION#mcp-v}"
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          else
+            SHORT_SHA="${GITHUB_SHA::7}"
+            TIMESTAMP="$(date +%Y%m%d%H%M%S)"
+            CURRENT=$(node -p "require('./package.json').version")
+            CANARY="${CURRENT}-canary.${TIMESTAMP}.${SHORT_SHA}"
+            echo "type=canary" >> "$GITHUB_OUTPUT"
+            echo "version=$CANARY" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set package version
+        run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
+
+      - name: Publish release
+        if: steps.version.outputs.type == 'release'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_KEY }}
+
+      - name: Publish canary
+        if: steps.version.outputs.type == 'canary'
+        run: npm publish --tag canary
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_KEY }}
