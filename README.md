@@ -13,10 +13,10 @@ npx @spawn-dock/mcp
 Set the `MCP_SERVER_URL` environment variable to point to your SpawnDock MCP server:
 
 ```bash
-MCP_SERVER_URL=https://your-server.example.com/sse npx @spawn-dock/mcp
+MCP_SERVER_URL=https://your-server.example.com/mcp/sse npx @spawn-dock/mcp
 ```
 
-Default: `http://localhost:3000/sse`
+Default: `http://localhost:3000/mcp/sse`
 
 ## Usage with Claude Code
 
@@ -29,7 +29,7 @@ Add to your project's `.mcp.json`:
       "command": "npx",
       "args": ["@spawn-dock/mcp"],
       "env": {
-        "MCP_SERVER_URL": "https://your-server.example.com/sse"
+        "MCP_SERVER_URL": "https://your-server.example.com/mcp/sse"
       }
     }
   }
@@ -46,7 +46,7 @@ Add to Cursor's MCP settings:
     "command": "npx",
     "args": ["@spawn-dock/mcp"],
     "env": {
-      "MCP_SERVER_URL": "https://your-server.example.com/sse"
+      "MCP_SERVER_URL": "https://your-server.example.com/mcp/sse"
     }
   }
 }

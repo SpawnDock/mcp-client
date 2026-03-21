@@ -7,7 +7,7 @@ import { createProxyServer, type PackageMeta } from "./server.js";
 
 const pkg: PackageMeta = createRequire(import.meta.url)("../package.json");
 
-const serverUrl = process.env.MCP_SERVER_URL || "http://localhost:3000/sse";
+const serverUrl = process.env.MCP_SERVER_URL || "http://localhost:3000/mcp/sse";
 
 async function main() {
   const sseTransport = new SSEClientTransport(new URL(serverUrl));
