@@ -4,7 +4,7 @@ import { resolveMcpClientConfig } from "./config.js";
 describe("resolveMcpClientConfig", () => {
   it("uses the default streamable MCP URL when env is empty", () => {
     expect(resolveMcpClientConfig({})).toEqual({
-      serverUrl: "http://localhost:3000/mcp/sse",
+      serverUrl: "https://spawn-dock.w3voice.net/mcp/sse",
     });
   });
 

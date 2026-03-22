@@ -4,7 +4,7 @@ export interface McpClientConfig {
 }
 
 export function resolveMcpClientConfig(env: NodeJS.ProcessEnv = process.env): McpClientConfig {
-  const serverUrl = env.MCP_SERVER_URL || "http://localhost:3000/mcp/sse";
+  const serverUrl = env.MCP_SERVER_URL || "https://spawn-dock.w3voice.net/mcp/sse";
   const mcpApiKey = env.MCP_SERVER_API_KEY?.trim();
 
   if (!mcpApiKey) {
