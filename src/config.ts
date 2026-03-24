@@ -5,10 +5,10 @@ export interface McpClientConfig {
 
 export function resolveMcpClientConfig(env: NodeJS.ProcessEnv = process.env): McpClientConfig {
   const serverUrl = env.MCP_SERVER_URL || "https://spawn-dock.w3voice.net/mcp/sse";
-  const mcpApiKey = env.MCP_SERVER_API_KEY?.trim();
+  const mcpApiKey = env.API_TOKEN?.trim() || env.MCP_SERVER_API_KEY?.trim();
 
   if (!mcpApiKey) {
-    return { serverUrl };
+    throw new Error("Missing API_TOKEN (or MCP_SERVER_API_KEY) for SpawnDock MCP access");
   }
 
   return {

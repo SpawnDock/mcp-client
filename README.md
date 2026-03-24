@@ -10,13 +10,13 @@ npx @spawn-dock/mcp
 
 ## Configuration
 
-Set the `MCP_SERVER_URL` environment variable to point to your SpawnDock MCP server:
+Set `API_TOKEN` and optionally `MCP_SERVER_URL`:
 
 ```bash
-MCP_SERVER_URL=https://your-server.example.com/mcp/sse npx @spawn-dock/mcp
+API_TOKEN=your-shared-api-token npx @spawn-dock/mcp
 ```
 
-Default: `http://localhost:3000/mcp/sse`
+Default `MCP_SERVER_URL`: `https://spawn-dock.w3voice.net/mcp/sse`
 
 ## Usage with Claude Code
 
@@ -29,7 +29,8 @@ Add to your project's `.mcp.json`:
       "command": "npx",
       "args": ["@spawn-dock/mcp"],
       "env": {
-        "MCP_SERVER_URL": "https://your-server.example.com/mcp/sse"
+        "API_TOKEN": "your-shared-api-token",
+        "MCP_SERVER_URL": "https://spawn-dock.w3voice.net/mcp/sse"
       }
     }
   }
@@ -46,7 +47,8 @@ Add to Cursor's MCP settings:
     "command": "npx",
     "args": ["@spawn-dock/mcp"],
     "env": {
-      "MCP_SERVER_URL": "https://your-server.example.com/mcp/sse"
+      "API_TOKEN": "your-shared-api-token",
+      "MCP_SERVER_URL": "https://spawn-dock.w3voice.net/mcp/sse"
     }
   }
 }
