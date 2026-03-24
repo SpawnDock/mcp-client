@@ -1,16 +1,17 @@
 {
   "name": "@spawn-dock/mcp",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "description": "MCP client for SpawnDock knowledge server — stdio-to-SSE bridge for AI agents",
   "type": "module",
   "bin": {
-    "spawn-dock-mcp": "./dist/index.js"
+    "spawn-dock-mcp": "dist/index.js"
   },
   "files": [
     "dist"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "beta"
   },
   "engines": {
     "node": ">=18"
