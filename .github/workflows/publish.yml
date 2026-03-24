@@ -1,11 +1,16 @@
 name: Publish @spawn-dock/mcp
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*"
     branches:
       - main
+
+concurrency:
+  group: publish-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -25,6 +30,15 @@ jobs:
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
+
+      - name: Verify npm auth secret
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN || secrets.NPM_KEY }}
+        run: |
+          if [[ -z "${NODE_AUTH_TOKEN}" ]]; then
+            echo "Missing npm auth. Set repository secret NPM_TOKEN (or NPM_KEY)." >&2
+            exit 1
+          fi
 
       - run: npm ci
 
@@ -50,14 +64,21 @@ jobs:
       - name: Set package version
         run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version --allow-same-version
 
-      - name: Publish release
+      - name: Publish release (stable or prerelease)
         if: steps.version.outputs.type == 'release'
-        run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_KEY }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN || secrets.NPM_KEY }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          # Prerelease semver (e.g. 1.0.0-beta.1) must use an explicit dist-tag (not latest).
+          if [[ "$VERSION" == *-* ]]; then
+            npm publish --access public --tag beta
+          else
+            npm publish --access public
+          fi
 
       - name: Publish canary
         if: steps.version.outputs.type == 'canary'
-        run: npm publish --tag canary
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_KEY }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN || secrets.NPM_KEY }}
+        run: npm publish --access public --tag canary
