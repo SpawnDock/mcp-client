@@ -1,6 +1,6 @@
 {
   "name": "@spawn-dock/mcp",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "MCP client for SpawnDock knowledge server — stdio-to-SSE bridge for AI agents",
   "type": "module",
   "bin": {
