@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import { resolveMcpClientConfig } from "./config.js";
 
 describe("resolveMcpClientConfig", () => {
-  it("throws when API token is missing", () => {
-    expect(() => resolveMcpClientConfig({})).toThrow("Missing API_TOKEN");
+  it("connects without Authorization when no token (server may reject; client stays up)", () => {
+    expect(resolveMcpClientConfig({})).toEqual({
+      serverUrl: "https://spawn-dock.w3voice.net/mcp/sse",
+    });
   });
 
   it("adds bearer authorization when API_TOKEN is set", () => {

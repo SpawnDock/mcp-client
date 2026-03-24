@@ -10,11 +10,13 @@ npx @spawn-dock/mcp
 
 ## Configuration
 
-Set `API_TOKEN` and optionally `MCP_SERVER_URL`:
+Set `MCP_SERVER_URL` if you are not using the default control plane, and set `API_TOKEN` when connecting to an authenticated server (production):
 
 ```bash
 API_TOKEN=your-shared-api-token npx @spawn-dock/mcp
 ```
+
+Without a token the bridge still starts, but the remote server may respond with **401**; in that case the local MCP proxy falls back to a **degraded** mode until `API_TOKEN` (or legacy `MCP_SERVER_API_KEY`) is provided.
 
 Default `MCP_SERVER_URL`: `https://spawn-dock.w3voice.net/mcp/sse`
 

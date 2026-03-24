@@ -8,7 +8,7 @@ export function resolveMcpClientConfig(env: NodeJS.ProcessEnv = process.env): Mc
   const mcpApiKey = env.API_TOKEN?.trim() || env.MCP_SERVER_API_KEY?.trim();
 
   if (!mcpApiKey) {
-    throw new Error("Missing API_TOKEN (or MCP_SERVER_API_KEY) for SpawnDock MCP access");
+    return { serverUrl };
   }
 
   return {
