@@ -1,6 +1,14 @@
 # @spawn-dock/mcp
 
-MCP client for the SpawnDock TMA knowledge server. Acts as a stdio-to-SSE bridge that lets AI agents (Claude, Cursor, etc.) access the SpawnDock knowledge base about Telegram Mini Apps and TON blockchain.
+MCP client for the SpawnDock knowledge server, it allows AI agents (Claude, Cursor, etc.) to access the SpawnDock knowledge base for development and is focused on the following topics:
+
+* Telegram mini apps and the TON blockchain, access to 55+ documents covering:
+  - **Telegram Mini Apps** — getting started, WebApp API, navigation, theming, testing, security, performance
+  - **TON Blockchain** — smart contracts, jettons, NFTs, DeFi, wallets, DNS, payments
+  - **TON Connect** — authentication, wallet integration
+  - **Deployment** — Cloudflare Pages, Vercel, GitHub Pages
+  - **Templates** — shop, game, landing, quiz, menu, portfolio
+
 
 ## Install
 
@@ -10,15 +18,11 @@ npx @spawn-dock/mcp
 
 ## Configuration
 
-Set `MCP_SERVER_URL` if you are not using the default control plane, and set `API_TOKEN` when connecting to an authenticated server (production):
+Open https://t.me/TMASpawnerBot, get your API token, and configure it in your project when connecting to an authenticated server:
 
 ```bash
 API_TOKEN=your-shared-api-token npx @spawn-dock/mcp
 ```
-
-Without a token the bridge still starts, but the remote server may respond with **401**; in that case the local MCP proxy falls back to a **degraded** mode until `API_TOKEN` (or legacy `MCP_SERVER_API_KEY`) is provided.
-
-Default `MCP_SERVER_URL`: `https://spawn-dock.w3voice.net/mcp/sse`
 
 ## Usage with Claude Code
 
@@ -31,8 +35,7 @@ Add to your project's `.mcp.json`:
       "command": "npx",
       "args": ["@spawn-dock/mcp"],
       "env": {
-        "API_TOKEN": "your-shared-api-token",
-        "MCP_SERVER_URL": "https://spawn-dock.w3voice.net/mcp/sse"
+        "API_TOKEN": "your-shared-api-token"
       }
     }
   }
@@ -49,49 +52,11 @@ Add to Cursor's MCP settings:
     "command": "npx",
     "args": ["@spawn-dock/mcp"],
     "env": {
-      "API_TOKEN": "your-shared-api-token",
-      "MCP_SERVER_URL": "https://spawn-dock.w3voice.net/mcp/sse"
+      "API_TOKEN": "your-shared-api-token"
     }
   }
 }
 ```
-
-## Available Tools
-
-### `search`
-
-Search the TMA knowledge base for development guidance, templates, and best practices.
-
-**Input:** `{ "query": "string" }`
-
-**Returns:** JSON with `answer` and `sources` fields.
-
-```json
-{
-  "answer": "Detailed answer about TMA development...",
-  "sources": [
-    { "file": "guides/getting-started.md", "section": "Quick Start" }
-  ]
-}
-```
-
-## Knowledge Base
-
-The server provides access to 55+ documents covering:
-
-- **Telegram Mini Apps** — getting started, WebApp API, navigation, theming, testing, security, performance
-- **TON Blockchain** — smart contracts, jettons, NFTs, DeFi, wallets, DNS, payments
-- **TON Connect** — authentication, wallet integration
-- **Deployment** — Cloudflare Pages, Vercel, GitHub Pages
-- **Templates** — shop, game, landing, quiz, menu, portfolio
-
-## How it works
-
-```
-AI Agent (stdio) → @spawn-dock/mcp → SSE → SpawnDock MCP Server → Qwen AI → Knowledge Base
-```
-
-The client connects to the remote MCP server via SSE, then exposes the `search` tool locally via stdio. AI agents see it as a local MCP tool.
 
 ## License
 
